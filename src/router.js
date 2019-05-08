@@ -6,10 +6,16 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
+    { path: '/', redirect: '/home' },
     {
-      path: '/',
+      path: '/home',
       name: 'home',
-      component: Home
+      component: Home,
+      meta:{
+        index:0,
+        loadname: "home",
+        name: "home",
+      }
     },
     {
       path: '/about',

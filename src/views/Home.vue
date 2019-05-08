@@ -1,18 +1,43 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="home" v-if="HomeData.loadingFlag">
+    <banner :bannerMess = 'HomeData.swiperSlides'></banner>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import banner from '@/components/banner.vue'
 
 export default {
-  name: 'home',
+  name: "home",
   components: {
-    HelloWorld
+    banner
+  },
+  data() {
+    return {};
+  },
+  computed: {
+     HomeData() {
+      return this.$store.state.home;
+    },
+  },
+  watch: {
+    $route() {
+      if (
+        this.$store.state.home.swiperSlides.length == 0 &&
+        this.$route.meta.index == 0
+      ) {
+        this.$store.dispatch("getHome");
+      }
+    }
+  },
+  created() {
+    if (
+      this.$store.state.home.swiperSlides.length == 0 &&
+      this.$route.meta.index == 0
+    ) {
+      this.$store.dispatch("getHome");
+    }
   }
-}
+};
 </script>
