@@ -41,4 +41,18 @@ export let HandleImageData = (res) => {
   }
   return resultData
 
+};
+export let ProductData = arr => {
+  if (arr.length) {
+    arr.map(function (data) {
+      if (data.ImageUrl) {
+        data.ImageUrl =
+          JSON.parse(data.ImageUrl)[0].ServerUrl +
+          JSON.parse(data.ImageUrl)[0].FilePath +
+          ".thumb." +
+          JSON.parse(data.ImageUrl)[0].FileExt;
+      }
+    })
+  }
+  return arr;
 }

@@ -1,6 +1,7 @@
 export default {
-    home:{
-        swiperSlides:[],
-        loadingFlag:0
-    }
+  headNavArr: [],
+  home: {
+    swiperSlides: [],
+    loadingFlag: 0
+  }
 }
