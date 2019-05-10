@@ -6,16 +6,21 @@ export default {
     // headNavArr
     LoadAdvertList("IMAGE", "Navigation", 1, 100, CheckTime).then(function (res) {
       This.state.headNavArr = ProductData(res.Data);
+      This.state.headNavArr.forEach(e => {
+        var obj = {
+          bannerMess:[],
+        }
+        This.state.home.list.push(obj);
+      });
+      if (This.state.home.list.length > This.state.headNavArr.length){
+        This.state.home.list.slice(0, This.state.headNavArr.length)
+      }
     });
   },
-  getHome: function () {
+  getHome: function (state) {
     var This = this;
     var CheckTime = '';
-    // banner
-    LoadAdvertList("IMAGE", "HOME_BANNER", 1, 100, CheckTime).then(function (res) {
-      This.state.home.swiperSlides = HandleImageData(res)
-      This.state.home.loadingFlag++;
-    });
+    console.log(state);
 
   }
 }

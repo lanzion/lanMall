@@ -1,5 +1,5 @@
 <template>
-  <div class="banner">
+  <div class="banner" v-if="bannerMess.length">
     <swiper :options="bannerSwiper" ref="BannerSwiper" v-if='bannerMess.length>1' class='banner-img'>
       <swiper-slide v-for="(slide,index) in bannerMess" :key="index">
           <a :href="slide.URL"><img :src="slide.ImageUrl" @click="Statistics(slide.Title + '|' + index)"></a>

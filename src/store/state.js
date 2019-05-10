@@ -4,5 +4,6 @@ export default {
     pageIndex: 0,
     newsIndex: 0,
     newsPrevIndex: 0,
+    list:[]
   }
 }

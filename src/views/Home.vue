@@ -6,6 +6,10 @@
         <swiper-slide v-for="(news, index) in headNavArr"  :key="index">
           <div>
             {{index}}
+            {{news.Url}}
+            <!-- <compoment :is="HomeData.newsIndex==0?'HomeMain':'HomeOther'" :HomepageData='headNavArr[HomeData.newsIndex].Url'></compoment> -->
+            <home-main v-if="news=='home'" :HomepageData='news.Url'></home-main>
+            <home-other v-if="news!='home'" :HomepageData='news.Url'></home-other>
           </div>
           <!-- <div class="loading" v-else>
             <img src="../../assets/images/370310983500145999.gif" alt="">
@@ -17,17 +21,20 @@
 </template>
 
 <script>
-// @ is an alias to /src
+import { swiper, swiperSlide } from "vue-awesome-swiper";
 import headNav from "@/components/nav.vue";
 import banner from '@/components/banner.vue'
-import { swiper, swiperSlide } from "vue-awesome-swiper";
+import HomeMain from "../components/HomeMain.vue";
+import HomeOther from "../components/HomeOther.vue";
 export default {
   name: "home",
   components: {
     swiper,
     swiperSlide,
     headNav,
-    banner
+    banner,
+    HomeMain,
+    HomeOther
   },
   data() {
     return {
@@ -64,25 +71,30 @@ export default {
     swiper() {
       return this.$refs["swiper-wrapper"].swiper;
     },
+     newsIndex(){
+      return this.$store.state.home.newsIndex;
+    },
   },
   watch: {
-    $route() {
-      
-    }
+    newsIndex(n,o){
+      this.swiper.slideTo(n,0,false);
+      if (!this.HomeData.list[n].bannerMess.length) {
+        this.$store.dispatch("getHome");
+      }
+    },
   },
   methods: {
     async end() {
       this.$store.state.home.newsIndex = this.swiper.activeIndex;
       this.$store.state.home.newsPrevIndex = this.swiper.previousIndex;
-
-      // if (this.headerNavArr[this.$store.state.home.newsIndex].loading == 0) {
-      //   this.$store.dispatch("getHome");
-      // }
     },
   },
   created() {
     if(!this.$store.state.headNavArr.length){
       this.$store.dispatch("getHeadNav");
+      if (!this.HomeData.list.length||!this.HomeData.list[this.$store.state.home.newsIndex].bannerMess) {
+        this.$store.dispatch("getHome");
+      }
     }
   }
 };

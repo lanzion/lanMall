@@ -1,11 +1,11 @@
 <template>
-  <div class="nav">
+  <div class="nav" v-if="headNavArr.length">
     <div class="top clearfloat">
       <router-link :to="{name: 'search'}" class="left"><img src="../assets/images/sear_img.png" alt=""></router-link>
       <router-link :to="{name: 'category'}" class="right"><img src="../assets/images/fenleis.png" alt=""></router-link>
     </div>
-    <swiper class='Hcontainer' :options="HeaderSwiperOption" ref="mySwiper" v-if="headNavArr.length">
-        <swiper-slide :class="'headNav'+index" v-for='(item,index) in headNavArr' :key='index'>
+    <swiper class='Hcontainer' :options="HeaderSwiperOption" ref="headSwiper" >
+        <swiper-slide :class="'headNav'+index" v-for='(item,index) in headNavArr' :key='index' @click.native="active(index)">
          <span :class="{'active':newsIndex == index}">{{item.Title}}</span>
         </swiper-slide>
       </swiper>
@@ -77,12 +77,58 @@ export default {
     },
     newsIndex(){
       return this.$store.state.home.newsIndex;
+    },
+    headSwiper(){
+       return this.$refs["headSwiper"].swiper;
     }
   },
   watch: {
-    newsIndex(){
-      
+    newsIndex(n,o){
+      var navWidth = 0;
+            for (var i = 0; i < this.headSwiper.slides.length; i++) {
+              navWidth += parseInt(this.headSwiper.slides.eq(i).outerWidth(true));
+            }
+            var clientWidth = parseInt(this.headSwiper.$wrapperEl.outerWidth(true));
+            var clickIndex = n;
+            var activeSlidePosition = this.headSwiper.slides[clickIndex].offsetLeft;
+            var tSpeed = 300;
+            var navSlideWidth = this.headSwiper.slides.eq(clickIndex).outerWidth(true);
+            this.headSwiper.slides
+              .eq(clickIndex)
+              .find("span")
+              .transition(tSpeed);
+            if (clickIndex > 0) {
+              this.headSwiper.slides.eq(clickIndex - 1).transition(tSpeed);
+            }
+            if (clickIndex < this.headSwiper.slides.length) {
+              this.headSwiper.slides.eq(clickIndex + 1).transition(tSpeed);
+            }
+            var navActiveSlideLeft = this.headSwiper.slides[clickIndex].offsetLeft;
+            this.headSwiper.setTransition(tSpeed);
+            if (
+              navActiveSlideLeft <
+              (clientWidth - parseInt(navSlideWidth)) / 2
+            ) {
+              this.headSwiper.setTranslate(0);
+            } else if (
+              navActiveSlideLeft >
+              navWidth - (parseInt(navSlideWidth) + clientWidth) / 2
+            ) {
+              this.headSwiper.setTranslate(clientWidth - navWidth);
+            } else {
+              this.headSwiper.setTranslate(
+                (clientWidth - parseInt(navSlideWidth)) / 2 - navActiveSlideLeft
+              );
+            }
     }
+  },
+  methods: {
+    async active(index) {
+      this.$store.state.home.newsIndex = index;
+    },
+  },
+  mounted () {
+   
   },
   created () {
     
@@ -93,6 +139,7 @@ export default {
 <style lang="less" scoped>
 @rem: 46.875rem;
 .nav {
+  border-bottom: 1px solid #fdf8f8;
   .top {
     height: 70/@rem;
     padding: 20/@rem;
