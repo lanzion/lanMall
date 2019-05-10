@@ -68,13 +68,21 @@ export default {
             }
           }
         }
-      }
+      },
     };
   },
   computed: {
     HeadNavData() {
       return this.$store.state.headNavArr;
     },
+    newsIndex(){
+      return this.$store.state.home.newsIndex;
+    }
+  },
+  watch: {
+    newsIndex(){
+      
+    }
   },
   created () {
     
@@ -137,6 +145,11 @@ export default {
       img {
         width: 100%;
       }
+    }
+    span.active{
+      border-bottom: 1px solid #b4282d;
+      color:#b4282d;
+      font-weight: bold;
     }
   }
   .recom {

@@ -1,7 +1,8 @@
 export default {
   headNavArr: [],
   home: {
-    swiperSlides: [],
-    loadingFlag: 0
+    pageIndex: 0,
+    newsIndex: 0,
+    newsPrevIndex: 0,
   }
 }
