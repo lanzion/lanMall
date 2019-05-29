@@ -66,6 +66,10 @@ export default {
       return this.$store.state.home;
     },
     headNavArr(){
+      if(this.$store.state.headNavArr.length&&!this.$route.params.id){
+         this.$router.push({ params: { id: this.$store.state.headNavArr[0].Url } });
+         this.$store.state.home.newsIndex = 0;
+      }
       return this.$store.state.headNavArr;
     },
     swiper() {
@@ -78,10 +82,26 @@ export default {
   watch: {
     newsIndex(n,o){
       this.swiper.slideTo(n,0,false);
+      this.$router.push({ params: { id: this.$store.state.headNavArr[n].Url } });
       if (!this.HomeData.list[n].bannerMess.length) {
-        this.$store.dispatch("getHome");
+        // this.$store.dispatch("getHome");
       }
     },
+    $route(){
+      var params = this.$route.params.id;
+    },
+    headNavArr(n,o){
+      if(n.length){
+        var id = this.$route.params.id
+        this.$store.state.headNavArr.forEach((v,i) => {
+          if(id==v.Url){
+            setTimeout(() => {
+              this.$store.state.home.newsIndex = i;
+            }, 20);
+          }
+        });
+      }
+    }
   },
   methods: {
     async end() {
@@ -89,13 +109,18 @@ export default {
       this.$store.state.home.newsPrevIndex = this.swiper.previousIndex;
     },
   },
+  mounted () {
+    this.$nextTick(()=>{
+      // this.swiper.app = this;
+    })
+  },
   created() {
     if(!this.$store.state.headNavArr.length){
       this.$store.dispatch("getHeadNav");
       if (!this.HomeData.list.length||!this.HomeData.list[this.$store.state.home.newsIndex].bannerMess) {
         this.$store.dispatch("getHome");
       }
-    }
+    };
   }
 };
 </script>

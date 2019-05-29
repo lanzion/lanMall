@@ -12,7 +12,7 @@ export default new Router({
   routes: [
     { path: '/', redirect: '/home' },
     {
-      path: '/home',
+      path: '/home/:id?',
       name: 'home',
       component: Home,
       meta:{
