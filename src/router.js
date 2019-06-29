@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
-import Search from "./views/Search.vue";
-import Category from "./views/Category.vue";
-import ShoppingCart from "./views/ShoppingCart.vue";
-import Personal from "./views/Personal.vue";
+
+const Home = r => require.ensure([], () => r(require('./views/Home.vue')), 'Home');
+const Search = r => require.ensure([], () => r(require('./views/Search.vue')), 'Search');
+const Category = r => require.ensure([], () => r(require('./views/Category.vue')), 'Category');
+const ShoppingCart = r => require.ensure([], () => r(require('./views/ShoppingCart.vue')), 'ShoppingCart');
+const Personal = r => require.ensure([], () => r(require('./views/Personal.vue')), 'Personal');
+const MoreHotProduct = r => require.ensure([], () => r(require('./views/MoreHotProduct.vue')), 'MoreHotProduct');
 
 Vue.use(Router)
 
@@ -59,6 +61,16 @@ export default new Router({
         index: 4,
         loadname: "personal",
         name: "personal",
+      }
+    },
+    {
+      path:'/morehotproduct',
+      name:'morehotproduct',
+      component: MoreHotProduct,
+      meta: {
+        index: 4,
+        loadname: "morehotproduct",
+        name: "morehotproduct",
       }
     },
   ]

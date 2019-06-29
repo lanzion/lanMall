@@ -1,4 +1,5 @@
 import command from './Command.js';
+import { async } from 'q';
 
 export let LoadAdvertList = async (kind, Advert, PageIndex, PageSize, CheckTime) => {
   return command.execute({
@@ -43,8 +44,23 @@ export let HandleImageData = (res) => {
 
 };
 export let ProductData = arr => {
+  if(!arr) return []
   if (arr.length) {
     arr.map(function (data) {
+      var PromotionTagTexts = {
+        conditional_discount: '满减',
+        conditional_gift: '满赠',
+        discount: '直降',
+        gift: '买赠',
+        shipfee: '包邮',
+        coupon: '优惠券',
+        limit: '限制',
+      };
+      if (PromotionTagTexts[data.PromotionTag] && data.PromotionTag != "shipfee" && data.PromotionTag != "limit") {
+        data.PromotionTag = PromotionTagTexts[data.PromotionTag]
+      } else {
+        data.PromotionTag = ''
+      }
       if (data.ImageUrl) {
         data.ImageUrl =
           JSON.parse(data.ImageUrl)[0].ServerUrl +
@@ -55,4 +71,16 @@ export let ProductData = arr => {
     })
   }
   return arr;
+}
+export let CompositeCall = async (param) => {
+  return command.execute({
+    api:'/api/Composite/Call',
+    param: param
+  })
+}
+export let GetTypeTree = async (param) =>{
+  return command.execute({
+    api: 'api/Article/GetTypeTree',
+    param: param
+  })
 }

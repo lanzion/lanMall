@@ -140,6 +140,12 @@ export default {
 @rem: 46.875rem;
 .nav {
   border-bottom: 1px solid #fdf8f8;
+  position: fixed;
+  width: 100%;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  background: #fff;
   .top {
     height: 70/@rem;
     padding: 20/@rem;
@@ -201,8 +207,6 @@ export default {
   }
   .recom {
     width: 80 / @rem;
-  }
-  .headNav0 {
   }
   .router-link-active {
     border-bottom: 2px solid #b4282d;

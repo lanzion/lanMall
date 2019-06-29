@@ -151,3 +151,9 @@ a {
 .clearfloat {
   zoom: 1
 }
+
+.swiper-container-horizontal .area-bullet-active,
+.swiper-container-horizontal .my-bullet-active {
+  background: #ba3d3f;
+  opacity: 1;
+}
